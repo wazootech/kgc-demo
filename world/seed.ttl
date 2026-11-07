@@ -1,0 +1,56 @@
+# KGC 2027 demo World — fictional support data, not a real pilot.
+#
+# Fable Systems is a fictional company. Every product, claim, source, and
+# test reference below is invented for this demo. Nothing here names a real
+# customer, partner, or deployment.
+#
+# Provenance model: every compatibility claim is a node with dct:source,
+# ex:validUntil, and ex:testReference. The "answer" query returns those
+# fields with the answer, so an answer can always be traced to its source.
+# There are 28 quads in this file.
+
+@prefix ex: <https://demo.wazoo.dev/kgc2027#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# --- Products (9 quads) ---
+ex:AuroraLaptop a ex:Product ;
+  ex:name "Aurora Laptop" ;
+  ex:maker "Fable Systems" .
+
+ex:Beacon27Monitor a ex:Product ;
+  ex:name "Beacon 27 Monitor" ;
+  ex:maker "Fable Systems" .
+
+ex:HaloDock a ex:Product ;
+  ex:name "Halo Dock" ;
+  ex:maker "Fable Systems" .
+
+# --- Specs (6 quads) ---
+ex:AuroraLaptop ex:displayOutput ex:DisplayPort14 ;
+  ex:maxRefresh "144"^^xsd:integer .
+
+ex:Beacon27Monitor ex:displayInput ex:DisplayPort14 ;
+  ex:maxRefresh "144"^^xsd:integer .
+
+ex:HaloDock ex:displayOutput ex:DisplayPort14 ;
+  ex:usbPorts "4"^^xsd:integer .
+
+# --- Claim C1: Aurora Laptop works with Beacon 27 Monitor at 144 Hz (7 quads) ---
+# Source: Fable lab test, 2026-10-14. This is the fact that gets revoked.
+ex:ClaimC1 a ex:CompatibilityClaim ;
+  ex:subject ex:AuroraLaptop ;
+  ex:object ex:Beacon27Monitor ;
+  ex:maxRefresh "144"^^xsd:integer ;
+  dct:source <https://demo.wazoo.dev/kgc2027/sources/lab-test-2026-10-14> ;
+  ex:validUntil "2027-01-31"^^xsd:date ;
+  ex:testReference "LAB-2026-10-14-07" .
+
+# --- Claim C3: Beacon 27 Monitor works with Halo Dock (6 quads) ---
+# Source: Halo Dock vendor specification, 2026-07. Untouched by the revocation.
+ex:ClaimC3 a ex:CompatibilityClaim ;
+  ex:subject ex:Beacon27Monitor ;
+  ex:object ex:HaloDock ;
+  dct:source <https://demo.wazoo.dev/kgc2027/sources/vendor-spec-halo-2026-07> ;
+  ex:validUntil "2027-06-30"^^xsd:date ;
+  ex:testReference "SPEC-HALO-2026-07" .

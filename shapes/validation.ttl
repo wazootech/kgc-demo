@@ -1,0 +1,55 @@
+# SHACL shape for ex:CompatibilityClaim — SPECIFICATION ONLY.
+#
+# No SHACL engine ships in @worlds/sdk 0.9.0, @wazoo/sparql-engine 0.4.4, or
+# @wazoo/reasoner 0.4.0 (checked by searching all three public repos on
+# 2026-11-06). This file is the agreed rule, written in SHACL so a reviewer
+# can read it. The checks actually executed by this demo are the SPARQL ASK
+# translations of V1–V4 in src/validate.ts, run by the real SPARQL engine.
+#
+# What a real SHACL engine would add that the SPARQL translation does not:
+# sh:closed (no unexpected properties on a claim), sh:datatype enforcement
+# beyond the ASK comparisons, and sh:nodeKind / sh:in reporting per
+# property. The SPARQL checks below are equivalent for V1–V4 as written,
+# and nothing more is claimed.
+
+@prefix ex: <https://demo.wazoo.dev/kgc2027#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ex:CompatibilityClaimShape a sh:NodeShape ;
+  sh:targetClass ex:CompatibilityClaim ;
+  # V1: the source must be a trusted source, not an arbitrary post.
+  sh:property [
+    sh:path dct:source ;
+    sh:minCount 1 ;
+    sh:in (
+      <https://demo.wazoo.dev/kgc2027/sources/lab-test-2026-10-14>
+      <https://demo.wazoo.dev/kgc2027/sources/vendor-spec-halo-2026-07>
+      <https://demo.wazoo.dev/kgc2027/sources/support-kb-1042>
+    ) ;
+  ] ;
+  # V2: a claim without a validity date cannot be believed.
+  # V3: a claim whose date has passed cannot be believed.
+  sh:property [
+    sh:path ex:validUntil ;
+    sh:minCount 1 ;
+    sh:datatype xsd:date ;
+    sh:minInclusive "2026-11-06"^^xsd:date ;
+  ] ;
+  # V4: both ends of the claim must be known products.
+  sh:property [
+    sh:path ex:subject ;
+    sh:minCount 1 ;
+    sh:class ex:Product ;
+  ] ;
+  sh:property [
+    sh:path ex:object ;
+    sh:minCount 1 ;
+    sh:class ex:Product ;
+  ] ;
+  # A claim must name the test or document behind it.
+  sh:property [
+    sh:path ex:testReference ;
+    sh:minCount 1 ;
+  ] .

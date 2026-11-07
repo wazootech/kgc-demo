@@ -1,0 +1,25 @@
+{
+  "description": "KGC 2027 demo: verifiable agent memory — provenance, validation, and retraction in Worlds.",
+  "license": "MIT",
+  "imports": {
+    "@worlds/sdk": "jsr:@worlds/sdk@0.9.0",
+    "@wazoo/sparql-engine": "jsr:@wazoo/sparql-engine@0.4.4",
+    "@std/assert": "jsr:@std/assert@^1.0.19",
+    "@std/path": "jsr:@std/path@^1"
+  },
+  "compilerOptions": {
+    "strict": true
+  },
+  "fmt": {
+    "exclude": ["eval/results.md"]
+  },
+  "tasks": {
+    "demo": "deno run --allow-all src/demo.ts",
+    "eval": "deno run --allow-all eval/run.ts",
+    "test": "deno test --allow-all test/",
+    "check": "deno check src/ eval/ test/",
+    "fmt": "deno fmt",
+    "fmt:check": "deno fmt --check",
+    "lint": "deno lint"
+  }
+}
