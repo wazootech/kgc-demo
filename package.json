@@ -1,0 +1,26 @@
+{
+  "name": "kgc-demo",
+  "private": true,
+  "type": "module",
+  "description": "KGC 2027 demo: verifiable agent memory \u2014 provenance, validation, and retraction in Worlds.",
+  "license": "MIT",
+  "packageManager": "bun@1.4.5",
+  "scripts": {
+    "demo": "bun src/demo.ts",
+    "eval": "bun eval/run.ts",
+    "test": "bun test test/",
+    "check": "bun check --no-script",
+    "fmt": "bun fmt --no-script",
+    "fmt:check": "bun fmt --no-script --check",
+    "lint": "oxlint --deny-warnings",
+    "ci": "bun run fmt:check && bun run lint && bun run check && bun run test"
+  },
+  "dependencies": {
+    "@wazoo/sparql-engine": "npm:@jsr/wazoo__sparql-engine@0.4.4",
+    "@worlds/sdk": "npm:@jsr/worlds__sdk@0.9.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "oxlint": "1.95.0"
+  }
+}

@@ -2,8 +2,9 @@
  * eval/run.ts re-runs the demo scenario and writes eval/results.md with
  * the measured numbers. Nothing here is hand-written: every number comes
  * from the run itself.
- * Usage: deno task eval
+ * Usage: bun run eval
  */
+import { writeFile } from "node:fs/promises";
 import { runScenario } from "../src/scenario.ts";
 import { writeRecords } from "../src/records.ts";
 
@@ -31,13 +32,13 @@ if (import.meta.main) {
     result.validationCandidate,
     "not-applicable",
   );
-  const answersChanged = result.answersBefore.filter((before, index) =>
-    before.answer !== result.answersAfter[index]?.answer
+  const answersChanged = result.answersBefore.filter(
+    (before, index) => before.answer !== result.answersAfter[index]?.answer,
   ).length;
 
   const results = `# Evaluation results
 
-Measured by running \`deno task eval\` on this machine. Every number
+Measured by running \`bun run eval\` on this machine. Every number
 below comes from that run; none is hand-written. Re-run it to reproduce
 these numbers (the retraction timestamp and elapsed time will differ).
 
@@ -51,9 +52,7 @@ these numbers (the retraction timestamp and elapsed time will differ).
 - Quads imported from \`world/seed.ttl\`: ${result.importedQuads}
 - Answers before retraction: ${result.answersBefore.length}
 - Answers traced to a source, validUntil date, and test reference: ${
-    result.answersBefore.filter((answer) =>
-      answer.source !== null
-    ).length
+    result.answersBefore.filter((answer) => answer.source !== null).length
   } of ${result.answersBefore.length}
 - Answers with no source: ${
     result.answersBefore.filter((answer) => answer.source === null).length
@@ -99,7 +98,7 @@ these numbers (the retraction timestamp and elapsed time will differ).
   or @wazoo/reasoner 0.4.0. See "What it does not do yet" in README.md.
 `;
 
-  await Deno.writeTextFile(RESULTS_URL, results);
+  await writeFile(RESULTS_URL, results);
   console.log(results);
   console.log(
     "Wrote eval/results.md, eval/answers.jsonl, world/retractions.jsonl",

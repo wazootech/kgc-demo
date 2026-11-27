@@ -22,6 +22,7 @@
  * feature — and (b) the answer log, which records that answer A1 used
  * claim C1. A deleted fact is not recoverable from the World.
  */
+import { readFile } from "node:fs/promises";
 import { createMemoryWorldsSdk } from "@worlds/sdk/memory";
 import type { WorldsSdk } from "@worlds/sdk";
 import { type CheckResult, runValidation } from "./validate.ts";
@@ -104,9 +105,9 @@ function bindingValue(
 async function countQuads(
   query: (sparql: string) => Promise<unknown>,
 ): Promise<number> {
-  const response = await query(
+  const response = (await query(
     "SELECT (COUNT(*) AS ?count) WHERE { ?s ?p ?o }",
-  ) as {
+  )) as {
     kind: string;
     data: { results: { bindings: Record<string, SelectBinding>[] } };
   };
@@ -136,7 +137,7 @@ SELECT ?claim ?source ?validUntil ?test ?maxRefresh WHERE {
     ex:testReference ?test .
   OPTIONAL { ?claim ex:maxRefresh ?maxRefresh }
 }`;
-  const response = await query(sparql) as {
+  const response = (await query(sparql)) as {
     kind: string;
     data: { results: { bindings: Record<string, SelectBinding>[] } };
   };
@@ -160,9 +161,10 @@ SELECT ?claim ?source ?validUntil ?test ?maxRefresh WHERE {
   return {
     id,
     question,
-    answer: maxRefresh === null
-      ? "Yes, verified compatible."
-      : `Yes, verified compatible at ${maxRefresh} Hz.`,
+    answer:
+      maxRefresh === null
+        ? "Yes, verified compatible."
+        : `Yes, verified compatible at ${maxRefresh} Hz.`,
     claim: bindingValue(bindings, "claim"),
     source: bindingValue(bindings, "source"),
     validUntil: bindingValue(bindings, "validUntil"),
@@ -182,7 +184,7 @@ export async function runScenario(): Promise<ScenarioResult> {
   };
 
   // Step 0: load the seed World.
-  const seed = await Deno.readTextFile(SEED_URL);
+  const seed = await readFile(SEED_URL, "utf8");
   await sdk.import({
     source: { kind: "serialized", data: seed, contentType: "text/turtle" },
   });
@@ -236,10 +238,10 @@ export async function runScenario(): Promise<ScenarioResult> {
 
   // Step 4: retract claim C1.
   await query(CLAIM_C1_DELETE);
-  const claimC1Check = await query(
+  const claimC1Check = (await query(
     `PREFIX ex: <https://demo.wazoo.dev/kgc2027#>
 ASK { ex:ClaimC1 a ex:CompatibilityClaim }`,
-  ) as { kind: string; data: { boolean: boolean } };
+  )) as { kind: string; data: { boolean: boolean } };
   const claimC1Gone = !claimC1Check.data.boolean;
   if (!claimC1Gone) throw new Error("Claim C1 survived DELETE DATA.");
   const quadsAfterRetraction = await countQuads(query);

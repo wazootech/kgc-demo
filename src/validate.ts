@@ -105,7 +105,7 @@ export async function runValidation(
       });
       continue;
     }
-    const response = await query(check.sparql) as {
+    const response = (await query(check.sparql)) as {
       kind: string;
       data: { boolean?: boolean };
     };

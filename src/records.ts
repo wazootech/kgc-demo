@@ -9,25 +9,26 @@
  *   feature. Both files are overwritten on each run, so re-running the
  *   demo is idempotent.
  */
+import { writeFile } from "node:fs/promises";
 import type { ScenarioResult } from "./scenario.ts";
 
 const ANSWERS_URL = new URL("../eval/answers.jsonl", import.meta.url);
 const RETRACTIONS_URL = new URL("../world/retractions.jsonl", import.meta.url);
 
 export async function writeRecords(result: ScenarioResult): Promise<void> {
-  const answerLines = [
-    ...result.answersBefore.map((answer) => ({
-      when: "before-retraction",
-      ...answer,
-    })),
-    ...result.answersAfter.map((answer) => ({
-      when: "after-retraction",
-      ...answer,
-    })),
-  ].map((entry) => JSON.stringify(entry)).join("\n") + "\n";
-  await Deno.writeTextFile(ANSWERS_URL, answerLines);
-  await Deno.writeTextFile(
-    RETRACTIONS_URL,
-    JSON.stringify(result.retraction) + "\n",
-  );
+  const answerLines =
+    [
+      ...result.answersBefore.map((answer) => ({
+        when: "before-retraction",
+        ...answer,
+      })),
+      ...result.answersAfter.map((answer) => ({
+        when: "after-retraction",
+        ...answer,
+      })),
+    ]
+      .map((entry) => JSON.stringify(entry))
+      .join("\n") + "\n";
+  await writeFile(ANSWERS_URL, answerLines);
+  await writeFile(RETRACTIONS_URL, JSON.stringify(result.retraction) + "\n");
 }

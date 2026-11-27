@@ -1,0 +1,7 @@
+[install]
+# One-day supply-chain delay.
+minimumReleaseAge = 86400
+
+[install.scopes]
+# JSR packages resolve through JSR's npm compatibility layer.
+"@jsr" = "https://npm.jsr.io"
