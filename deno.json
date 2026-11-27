@@ -3,9 +3,7 @@
   "license": "MIT",
   "imports": {
     "@worlds/sdk": "jsr:@worlds/sdk@0.9.0",
-    "@wazoo/sparql-engine": "jsr:@wazoo/sparql-engine@0.4.4",
-    "@std/assert": "jsr:@std/assert@^1.0.19",
-    "@std/path": "jsr:@std/path@^1"
+    "@wazoo/sparql-engine": "jsr:@wazoo/sparql-engine@0.4.4"
   },
   "compilerOptions": {
     "strict": true

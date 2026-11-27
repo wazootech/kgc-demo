@@ -22,6 +22,7 @@
  * feature — and (b) the answer log, which records that answer A1 used
  * claim C1. A deleted fact is not recoverable from the World.
  */
+import { readFile } from "node:fs/promises";
 import { createMemoryWorldsSdk } from "@worlds/sdk/memory";
 import type { WorldsSdk } from "@worlds/sdk";
 import { type CheckResult, runValidation } from "./validate.ts";
@@ -182,7 +183,7 @@ export async function runScenario(): Promise<ScenarioResult> {
   };
 
   // Step 0: load the seed World.
-  const seed = await Deno.readTextFile(SEED_URL);
+  const seed = await readFile(SEED_URL, "utf8");
   await sdk.import({
     source: { kind: "serialized", data: seed, contentType: "text/turtle" },
   });

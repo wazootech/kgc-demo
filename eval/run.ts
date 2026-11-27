@@ -4,6 +4,7 @@
  * from the run itself.
  * Usage: deno task eval
  */
+import { writeFile } from "node:fs/promises";
 import { runScenario } from "../src/scenario.ts";
 import { writeRecords } from "../src/records.ts";
 
@@ -99,7 +100,7 @@ these numbers (the retraction timestamp and elapsed time will differ).
   or @wazoo/reasoner 0.4.0. See "What it does not do yet" in README.md.
 `;
 
-  await Deno.writeTextFile(RESULTS_URL, results);
+  await writeFile(RESULTS_URL, results);
   console.log(results);
   console.log(
     "Wrote eval/results.md, eval/answers.jsonl, world/retractions.jsonl",
