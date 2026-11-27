@@ -16,19 +16,19 @@ const ANSWERS_URL = new URL("../eval/answers.jsonl", import.meta.url);
 const RETRACTIONS_URL = new URL("../world/retractions.jsonl", import.meta.url);
 
 export async function writeRecords(result: ScenarioResult): Promise<void> {
-  const answerLines = [
-    ...result.answersBefore.map((answer) => ({
-      when: "before-retraction",
-      ...answer,
-    })),
-    ...result.answersAfter.map((answer) => ({
-      when: "after-retraction",
-      ...answer,
-    })),
-  ].map((entry) => JSON.stringify(entry)).join("\n") + "\n";
+  const answerLines =
+    [
+      ...result.answersBefore.map((answer) => ({
+        when: "before-retraction",
+        ...answer,
+      })),
+      ...result.answersAfter.map((answer) => ({
+        when: "after-retraction",
+        ...answer,
+      })),
+    ]
+      .map((entry) => JSON.stringify(entry))
+      .join("\n") + "\n";
   await writeFile(ANSWERS_URL, answerLines);
-  await writeFile(
-    RETRACTIONS_URL,
-    JSON.stringify(result.retraction) + "\n",
-  );
+  await writeFile(RETRACTIONS_URL, JSON.stringify(result.retraction) + "\n");
 }

@@ -32,8 +32,8 @@ if (import.meta.main) {
     result.validationCandidate,
     "not-applicable",
   );
-  const answersChanged = result.answersBefore.filter((before, index) =>
-    before.answer !== result.answersAfter[index]?.answer
+  const answersChanged = result.answersBefore.filter(
+    (before, index) => before.answer !== result.answersAfter[index]?.answer,
   ).length;
 
   const results = `# Evaluation results
@@ -52,9 +52,7 @@ these numbers (the retraction timestamp and elapsed time will differ).
 - Quads imported from \`world/seed.ttl\`: ${result.importedQuads}
 - Answers before retraction: ${result.answersBefore.length}
 - Answers traced to a source, validUntil date, and test reference: ${
-    result.answersBefore.filter((answer) =>
-      answer.source !== null
-    ).length
+    result.answersBefore.filter((answer) => answer.source !== null).length
   } of ${result.answersBefore.length}
 - Answers with no source: ${
     result.answersBefore.filter((answer) => answer.source === null).length

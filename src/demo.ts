@@ -5,14 +5,17 @@
 import { runScenario } from "./scenario.ts";
 import { writeRecords } from "./records.ts";
 
-function checkLine(
-  result: { id: string; name: string; outcome: string },
-): string {
-  const mark = result.outcome === "pass"
-    ? "PASS"
-    : result.outcome === "violation"
-    ? "VIOLATION"
-    : "N/A";
+function checkLine(result: {
+  id: string;
+  name: string;
+  outcome: string;
+}): string {
+  const mark =
+    result.outcome === "pass"
+      ? "PASS"
+      : result.outcome === "violation"
+        ? "VIOLATION"
+        : "N/A";
   return `  ${result.id} ${result.name}: ${mark}`;
 }
 
@@ -53,9 +56,9 @@ if (import.meta.main) {
   console.log(`   reason: ${result.retraction.reason}`);
   console.log(`   quads remaining: ${result.quadsAfterRetraction}`);
   console.log(
-    `   earlier answers affected: ${
-      result.retraction.answersAffected.join(", ")
-    }`,
+    `   earlier answers affected: ${result.retraction.answersAffected.join(
+      ", ",
+    )}`,
   );
   console.log("");
   console.log("4. RE-ASK");
