@@ -38,7 +38,7 @@ if (import.meta.main) {
 
   const results = `# Evaluation results
 
-Measured by running \`deno task eval\` on this machine. Every number
+Measured by running \`bun run eval\` on this machine. Every number
 below comes from that run; none is hand-written. Re-run it to reproduce
 these numbers (the retraction timestamp and elapsed time will differ).
 
