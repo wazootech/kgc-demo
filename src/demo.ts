@@ -1,6 +1,6 @@
 /**
  * demo.ts runs the KGC 2027 demo and prints a human-readable report.
- * Usage: deno task demo
+ * Usage: bun run demo
  */
 import { runScenario } from "./scenario.ts";
 import { writeRecords } from "./records.ts";

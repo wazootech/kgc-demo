@@ -2,7 +2,7 @@
  * eval/run.ts re-runs the demo scenario and writes eval/results.md with
  * the measured numbers. Nothing here is hand-written: every number comes
  * from the run itself.
- * Usage: deno task eval
+ * Usage: bun run eval
  */
 import { writeFile } from "node:fs/promises";
 import { runScenario } from "../src/scenario.ts";
